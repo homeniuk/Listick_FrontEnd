@@ -4,6 +4,7 @@ export const MOVE_LISTICK    = 'MOVE_LISTICK';
 export const CHANGE_LISTICK    = 'CHANGE_LISTICK';
 export const SELECT_LISTICK  = 'SELECT_LISTICK';
 export const SET_LISTICK_POSSITION  = 'SET_LISTICK_POSSITION';
+export const SET_LIST  = 'SET_LIST';
 
 
 export const addNewListick = ()=>({
@@ -30,4 +31,9 @@ export const setListickPossition = (id, top, left)=>({
     id,
     top,
     left
+})
+
+export const setList = (list)=>({
+    type: SET_LIST,
+    list
 })

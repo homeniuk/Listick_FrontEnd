@@ -1,4 +1,4 @@
-import {ADD_NEW_LISTICK, DELETE_LISTICK, CHANGE_LISTICK, SELECT_LISTICK, SET_LISTICK_POSSITION} from "../actions/ListicksAC";
+import {ADD_NEW_LISTICK, DELETE_LISTICK, CHANGE_LISTICK, SELECT_LISTICK, SET_LISTICK_POSSITION, SET_LIST} from "../actions/ListicksAC";
 
 let initialState = {
     listOfListics: []
@@ -69,7 +69,8 @@ const Listick = (state = initialState, action) => {
                 }
             }  
             return {...state, listOfListics: _List}; 
-
+        case SET_LIST:
+            return {...state, listOfListics: action.list}; 
         default: return state;
     }
 }
