@@ -1,12 +1,17 @@
 
 import ButtonAdd from './components/ButtonAdd';
 import Listick from './components/Listick';
+import { useSelector } from 'react-redux';
+
 function App() {
-  const L = {id:1, top:50, left: 150, text: "15646"};
+  const List = useSelector((state)=>state.listicks.listOfListics);
+
   return (
     <div>
       <ButtonAdd></ButtonAdd>
-      <Listick id={L.id} top={L.top} left={L.left} text={L.text}></Listick>
+      {List.map((i, index) => {
+        return <Listick key={i.id} id={i.id} top={i.top} left={i.left} text={i.text}/>
+      })}
     </div>
   );
 }
