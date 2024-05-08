@@ -1,18 +1,18 @@
 
-import ButtonAdd from './components/ButtonAdd';
-import Listick from './components/Listick';
-import { useSelector } from 'react-redux';
+import ListicksPage from './components/ListicksPage';
+import LoginPage from './components/LoginPage';
+import PageWasNotFound from './components/PageWasNotFound';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const List = useSelector((state)=>state.listicks.listOfListics);
-
   return (
-    <div>
-      <ButtonAdd></ButtonAdd>
-      {List.map((i, index) => {
-        return <Listick key={i.id} id={i.id} top={i.top} left={i.left} text={i.text}/>
-      })}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/'         element={<ListicksPage />} />
+        <Route path='login'         element={<LoginPage />} />
+        <Route path='*'             element={<PageWasNotFound/>} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 

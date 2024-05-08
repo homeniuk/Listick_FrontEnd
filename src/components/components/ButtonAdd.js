@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import {addNewListick} from '../store/ListickSlice';
+import {addNewListick} from '../../store/ListickSlice';
 
 function ButtonAdd() {
   const dispatch = useDispatch();

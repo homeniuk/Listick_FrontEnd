@@ -1,4 +1,4 @@
-import {deleteListick, changeListick, selectListick, setListickPosition} from '../store/ListickSlice';
+import {deleteListick, changeListick, selectListick, setListickPosition} from '../../store/ListickSlice';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
