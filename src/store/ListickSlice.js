@@ -1,9 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk  } from '@reduxjs/toolkit';
+import { ListickAPI } from '../api/listicAPI.js';
 
 const listicksSlice = createSlice({
     name: "listicks",
     initialState: {
-        listOfListics: []
+        listOfListics: [],
+        isDownloading: false,
     },
     reducers:{
         addNewListick(state, action){
@@ -62,9 +64,29 @@ const listicksSlice = createSlice({
                 }
             }   
         },
-        setList(state, action){
-            state.listOfListics = action.payload.id;
+        clearList(state, action){
+            state.listOfListics = [];
         }
+        /*setList(state, action){
+            state.listOfListics = action.payload.id;
+        }*/
+    },
+    extraReducers: (builder)=>{
+        builder
+        //getAllListicks
+        .addCase(getAllListicks.pending, (state)=> {
+            state.isDownloading = true;
+            state.error = '';
+        })
+        .addCase(getAllListicks.fulfilled, (state, action)=> {
+            state.isDownloading = false;
+            state.listOfListics = action.payload;
+        })
+        .addCase(getAllListicks.rejected, (state, action)=> {
+            state.isDownloading = false;
+            if (action.payload.message)
+                state.error = action.payload.message    
+        })
     }
 });
 
@@ -73,7 +95,19 @@ export const {addNewListick,
     changeListick, 
     selectListick,
     setListickPosition,
-    setList } = listicksSlice.actions;
+    clearList } = listicksSlice.actions;
 
 export default listicksSlice.reducer;
 
+export const getAllListicks = createAsyncThunk(
+    'listicks/getAllListicks',
+    async function(inputParametr, {rejectWithValue}) {
+        try {
+            const response = await ListickAPI.getAllListicksOnServer(inputParametr.token);
+            return response.data;
+ 
+        } catch(e) {
+            return rejectWithValue('Server error');
+        }
+    }
+);

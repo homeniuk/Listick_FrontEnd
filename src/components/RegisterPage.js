@@ -1,16 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import {loginUser, cleanError} from '../store/UserSlice'
+import {registerUser, cleanError} from '../store/UserSlice'
 import { useNavigate } from 'react-router-dom';
 import Downloading from './Downloading';
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const dispatch        = useDispatch();
     const navigate        = useNavigate();
     const isAuth          = useSelector((state)=>state.user.isAuth);
     const isDownloading   = useSelector((state)=>state.user.isDownloading);
     const userError       = useSelector((state)=>state.user.error);
-    
 
     useEffect(() => {
       if (!isAuth) {
@@ -21,7 +20,7 @@ export default function LoginPage() {
         }
       }
     }, []);
-    
+
     useEffect(()=>{
       if (isAuth)
         navigate("/");
@@ -30,12 +29,12 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function Login(e) {
-        dispatch(loginUser({email, password}));
+    function Register(e) {
+        dispatch(registerUser({email, password}));
     }
-    function ToRegister(e) {
+    function ToLogin(e) {
       dispatch(cleanError());
-      navigate("/register");
+      navigate("/login");
     }
 
     //if (isDownloading)
@@ -44,7 +43,7 @@ export default function LoginPage() {
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register your account</h2>
         </div>
       
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -66,12 +65,11 @@ export default function LoginPage() {
             </div>
       
             <div className="mt-4">
-              <button onClick={()=>{Login()}} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+              <button onClick={()=>{Register()}} className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
             </div>
             <div className="mt-4">
-              <button onClick={()=>{ToRegister()}} className="flex w-full justify-center rounded-md border-indigo-600 border-2 px-3 py-1.5 text-sm font-semibold leading-6 text-indigo-600 shadow-sm hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Go to registering</button>
+              <button onClick={()=>{ToLogin()}} className="flex w-full justify-center rounded-md border-indigo-600 border-2 px-3 py-1.5 text-sm font-semibold leading-6 text-indigo-600 shadow-sm hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Go to login</button>
             </div>
-         
         </div>
 
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -79,4 +77,4 @@ export default function LoginPage() {
         </div>
       </div>
     );
-  }
+}
