@@ -20,7 +20,10 @@ const userSlice = createSlice({
         },
         cleanError(state, action){
             state.error = '';
-        }
+        },
+        setError(state, action){
+            state.error = action.payload.error;
+        },
     },
     extraReducers: (builder)=>{
         builder
@@ -109,6 +112,7 @@ const userSlice = createSlice({
         })
         .addCase(getUser.rejected, (state, action)=> {
             state.isDownloading = false;
+            localStorage.removeItem('user');
             if (action.payload.message)
                 state.error = action.payload.message    
         })
@@ -116,7 +120,7 @@ const userSlice = createSlice({
     }
 });
 
-export const {logout, cleanError} = userSlice.actions;
+export const {logout, setError, cleanError} = userSlice.actions;
 
 export default userSlice.reducer;
 

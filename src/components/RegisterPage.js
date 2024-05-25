@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import {registerUser, cleanError} from '../store/UserSlice'
+import {registerUser, setError, cleanError} from '../store/UserSlice'
 import { useNavigate } from 'react-router-dom';
 import Downloading from './Downloading';
+import { validateEmailPassword } from '../service/validation';
 
 export default function RegisterPage() {
     const dispatch        = useDispatch();
@@ -30,7 +31,12 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
 
     function Register(e) {
-        dispatch(registerUser({email, password}));
+        const error = validateEmailPassword(email, password);
+        if (error){
+          dispatch(setError({error}));
+        } else {
+          dispatch(registerUser({email, password}));
+        }
     }
     function ToLogin(e) {
       dispatch(cleanError());

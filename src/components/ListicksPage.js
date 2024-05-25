@@ -20,7 +20,7 @@ export default function ListicksPage() {
   const isUserDownloading   = useSelector((state)=>state.user.isDownloading);
   const isListDownloading   = useSelector((state)=>state.listicks.isDownloading);
 
-   useEffect(() => {
+   /*useEffect(() => {
     if (!isAuth) {
       const userData = JSON.parse(localStorage.getItem('user'));
       const accessToken = userData?.accessToken;
@@ -30,25 +30,34 @@ export default function ListicksPage() {
         navigate("/login");
       }
     }
-  }, []);
+  }, []);*/
 
   useEffect(() => {
-    if (token && isAuth){
+    if (isAuth){
       dispatch(getAllListicks({token}));
     } else {
       dispatch(clearList());
+
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const accessToken = userData?.accessToken;
+      if (accessToken){
+        dispatch(getUser({token: accessToken}));
+      } else {
+        navigate("/login");
+      }
+
       //navigate("/login");
     }
+
+    /*if (isAuth === false && !isUserDownloading && !isListDownloading){
+      navigate("/login");
+    }*/
+
   },[isAuth])
 
   //if (isUserDownloading || isListDownloading)
   //  return (<Downloading/>)
   
-  if (isAuth === false && !isUserDownloading && !isListDownloading){
-    //return (<LoginPage/>);
-    navigate("/login");
-  }
-
   return (
     <div>
         <ButtonAdd/>

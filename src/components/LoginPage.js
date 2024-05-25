@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import {loginUser, cleanError} from '../store/UserSlice'
+import {loginUser, getUser, setError, cleanError} from '../store/UserSlice'
 import { useNavigate } from 'react-router-dom';
 import Downloading from './Downloading';
+import { validateEmailPassword } from '../service/validation';
 
 export default function LoginPage() {
     const dispatch        = useDispatch();
@@ -17,7 +18,7 @@ export default function LoginPage() {
         const userData = JSON.parse(localStorage.getItem('user'));
         const accessToken = userData?.accessToken;
         if (accessToken){
-          navigate("/");
+          dispatch(getUser({token: accessToken}));
         }
       }
     }, []);
@@ -31,8 +32,14 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
 
     function Login(e) {
-        dispatch(loginUser({email, password}));
+        const error = validateEmailPassword(email, password);
+        if (error){
+          dispatch(setError({error}));
+        } else {
+          dispatch(loginUser({email, password}));
+        }
     }
+
     function ToRegister(e) {
       dispatch(cleanError());
       navigate("/register");
