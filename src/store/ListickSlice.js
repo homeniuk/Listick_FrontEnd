@@ -43,7 +43,7 @@ const listicksSlice = createSlice({
             for (let x of state.listOfListics) {
                 if (x.id === action.payload.id)
                   x.text = action.payload.text;
-            } 
+            }
         },
         selectListick(state, action){
             let _listik;
@@ -62,7 +62,7 @@ const listicksSlice = createSlice({
                   x.top = action.payload.top;
                   x.left = action.payload.left;
                 }
-            }   
+            }  
         },
         clearList(state, action){
             state.listOfListics = [];
@@ -87,6 +87,48 @@ const listicksSlice = createSlice({
             if (action.payload.message)
                 state.error = action.payload.message    
         })
+        //saveAllListicks
+        .addCase(saveAllListicks.pending, (state)=> {
+            state.isDownloading = true;
+            state.error = '';
+        })
+        .addCase(saveAllListicks.fulfilled, (state, action)=> {
+            state.isDownloading = false;
+            //state.listOfListics = action.payload;
+        })
+        .addCase(saveAllListicks.rejected, (state, action)=> {
+            state.isDownloading = false;
+            if (action.payload.message)
+                state.error = action.payload.message    
+        })
+        //saveListick
+        .addCase(saveListick.pending, (state)=> {
+            state.isDownloading = true;
+            state.error = '';
+        })
+        .addCase(saveListick.fulfilled, (state, action)=> {
+            state.isDownloading = false;
+            //state.listOfListics = action.payload;
+        })
+        .addCase(saveListick.rejected, (state, action)=> {
+            state.isDownloading = false;
+            if (action.payload.message)
+                state.error = action.payload.message    
+        })
+        //removeListick
+        .addCase(removeListick.pending, (state)=> {
+            state.isDownloading = true;
+            state.error = '';
+        })
+        .addCase(removeListick.fulfilled, (state, action)=> {
+            state.isDownloading = false;
+            //state.listOfListics = action.payload;
+        })
+        .addCase(removeListick.rejected, (state, action)=> {
+            state.isDownloading = false;
+            if (action.payload.message)
+                state.error = action.payload.message    
+        })
     }
 });
 
@@ -95,7 +137,7 @@ export const {addNewListick,
     changeListick, 
     selectListick,
     setListickPosition,
-    clearList } = listicksSlice.actions;
+    clearList,    } = listicksSlice.actions;
 
 export default listicksSlice.reducer;
 
@@ -104,6 +146,45 @@ export const getAllListicks = createAsyncThunk(
     async function(inputParametr, {rejectWithValue}) {
         try {
             const response = await ListickAPI.getAllListicksOnServer(inputParametr.token);
+            return response.data;
+ 
+        } catch(e) {
+            return rejectWithValue('Server error');
+        }
+    }
+);
+
+export const saveAllListicks = createAsyncThunk(
+    'listicks/saveAllListicks',
+    async function(inputParametr, {rejectWithValue}) {
+        try {
+            const response = await ListickAPI.saveAllListicksOnServer(inputParametr.List);
+            return response.data;
+ 
+        } catch(e) {
+            return rejectWithValue('Server error');
+        }
+    }
+);
+
+export const saveListick = createAsyncThunk(
+    'listicks/saveListick',
+    async function(inputParametr, {rejectWithValue}) {
+        try {
+            const response = await ListickAPI.saveListickOnServer(inputParametr.listick);
+            return response.data;
+ 
+        } catch(e) {
+            return rejectWithValue('Server error');
+        }
+    }
+);
+
+export const removeListick = createAsyncThunk(
+    'listicks/removeListick',
+    async function(inputParametr, {rejectWithValue}) {
+        try {
+            const response = await ListickAPI.deleteListickOnServer(inputParametr.id);
             return response.data;
  
         } catch(e) {

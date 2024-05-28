@@ -5,7 +5,6 @@ import ButtonAdd    from './components/ButtonAdd';
 import ButtonLogout from './components/ButtonLogout';
 import Listick      from './components/Listick';
 import Downloading  from './Downloading';
-import LoginPage    from './LoginPage';
 
 
 import { getUser } from '../store/UserSlice';
@@ -17,46 +16,25 @@ export default function ListicksPage() {
   const List            = useSelector((state)=>state.listicks.listOfListics);
   const isAuth          = useSelector((state)=>state.user.isAuth);
   const token           = useSelector((state)=>state.user.token);
+
   const isUserDownloading   = useSelector((state)=>state.user.isDownloading);
   const isListDownloading   = useSelector((state)=>state.listicks.isDownloading);
 
-   /*useEffect(() => {
-    if (!isAuth) {
-      const userData = JSON.parse(localStorage.getItem('user'));
-      const accessToken = userData?.accessToken;
-      if (accessToken){
-        dispatch(getUser({token: accessToken}));
-      } else {
-        navigate("/login");
-      }
-    }
-  }, []);*/
-
   useEffect(() => {
     if (isAuth){
-      dispatch(getAllListicks({token}));
+      dispatch(getAllListicks(token));
     } else {
       dispatch(clearList());
 
-      const userData = JSON.parse(localStorage.getItem('user'));
-      const accessToken = userData?.accessToken;
+      const accessToken = localStorage.getItem('accessToken');
       if (accessToken){
         dispatch(getUser({token: accessToken}));
       } else {
         navigate("/login");
       }
-
-      //navigate("/login");
     }
 
-    /*if (isAuth === false && !isUserDownloading && !isListDownloading){
-      navigate("/login");
-    }*/
-
   },[isAuth])
-
-  //if (isUserDownloading || isListDownloading)
-  //  return (<Downloading/>)
   
   return (
     <div>

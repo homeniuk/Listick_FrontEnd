@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
-
 const baseUrl = "http://127.0.0.1:5000/";
 
-const getConfig = (token) => {
+const getConfig = () => {
+  const accessToken = localStorage.getItem('accessToken');
   return {
     headers: {
-      Authorization: "Bearer " + token
+      Authorization: "Bearer " + accessToken
     }
   }
 }
@@ -37,12 +37,12 @@ instance.interceptors.response.use(
       try {
       
           const res = await axios.get(baseUrl + "refreshtoken");
-          //store.dispatch(setToken({token: res.data.accessToken}));
-          
+          localStorage.setItem('accessToken', res.data.accessToken);
           originalRequest.headers.Authorization = 'Bearer ' + res.data.accessToken;
           return instance.request(originalRequest);
       } catch (e) {
-          console.log('Not registered')
+          console.log('Error')
+          localStorage.removeItem('accessToken');
       }
     }
     return error.response;
@@ -50,7 +50,7 @@ instance.interceptors.response.use(
 );
 
 const getUserOnServer = async (token) => {
-  const config = getConfig(token);
+  const config = getConfig();
   const data = instance.get("getuser", config);
   return data;
 }

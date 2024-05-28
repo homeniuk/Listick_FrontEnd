@@ -42,8 +42,7 @@ const userSlice = createSlice({
             else {
                 state.email = action.payload.user.email;
                 state.token = action.payload.accessToken;
-                const data = {email: action.payload.user.email, accessToken: action.payload.accessToken};
-                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('accessToken', action.payload.accessToken);
                 state.isAuth = true; 
                  
             }           
@@ -65,8 +64,7 @@ const userSlice = createSlice({
             else {
                 state.email = action.payload.user.email;
                 state.token = action.payload.accessToken;
-                const data = {email: action.payload.user.email, accessToken: action.payload.accessToken};
-                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('accessToken', action.payload.accessToken);
                 state.isAuth = true;  
             }           
         })
@@ -87,7 +85,7 @@ const userSlice = createSlice({
             else {
                 state.email = '';
                 state.token = '';
-                localStorage.removeItem('user');
+                localStorage.removeItem('accessToken');
                 state.isAuth = false;  
             }           
         })
@@ -108,14 +106,13 @@ const userSlice = createSlice({
             else {
                 state.email = action.payload.user.email;
                 state.token = action.payload.accessToken;
-                const data = {email: action.payload.user.email, accessToken: action.payload.accessToken};
-                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('accessToken', action.payload.accessToken);
                 state.isAuth = true;  
             }           
         })
         .addCase(getUser.rejected, (state, action)=> {
             state.isDownloading = false;
-            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
             if (action.payload.message)
                 state.error = action.payload.message    
         })

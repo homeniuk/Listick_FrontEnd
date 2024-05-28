@@ -14,8 +14,8 @@ export default function RegisterPage() {
 
     useEffect(() => {
       if (!isAuth) {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        const accessToken = userData?.accessToken;
+        //const userData = JSON.parse(localStorage.getItem('user'));
+        const accessToken = localStorage.getItem('accessToken');
         if (accessToken){
           navigate("/");
         }

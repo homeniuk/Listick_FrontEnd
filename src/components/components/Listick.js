@@ -1,4 +1,4 @@
-import {deleteListick, changeListick, selectListick, setListickPosition} from '../../store/ListickSlice';
+import {deleteListick, changeListick, selectListick, setListickPosition, saveListick, removeListick} from '../../store/ListickSlice';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
@@ -15,9 +15,13 @@ function Listick(props) {
 
   function closeListick() {
     dispatch(deleteListick({id}));
+    dispatch(removeListick({id}));
   }
   function changeText(text) {
     dispatch(changeListick({id, text}));
+    const listick = {id, top:props.top, left:props.left, text};
+    dispatch(saveListick({listick}));
+    console.log('change');
   }
   function select() {
     dispatch(selectListick({id}));
@@ -39,7 +43,11 @@ function Listick(props) {
   function onDragEnd(e) {
     let x = e.clientX;
     let y = e.clientY;
-    dispatch(setListickPosition({id, top: y + diff.dTop, left: x + diff.dLeft}));
+    const top = y + diff.dTop;
+    const left = x + diff.dLeft;
+    dispatch(setListickPosition({id, top, left}));
+    const listick = {id, top, left, text:props.text};
+    dispatch(saveListick({listick}));
   }
 
   return (
