@@ -7,6 +7,7 @@ function Listick(props) {
   const dispatch = useDispatch();
 
   const [diff, setdiff] = useState({dTop:0, dLeft:0});
+  const [timeoutId, setTimeoutId] = useState(null);
 
   const divStyle = {
     top: ''+ props.top + 'px',
@@ -19,10 +20,19 @@ function Listick(props) {
   }
   function changeText(text) {
     dispatch(changeListick({id, text}));
-    const listick = {id, top:props.top, left:props.left, text};
-    dispatch(saveListick({listick}));
-    console.log('change');
+
+    clearTimeout(timeoutId);
+    const timeoutId_ = setTimeout(() => {
+      sendDataToServer(text);
+    }, 1000);
+    setTimeoutId(timeoutId_);
   }
+
+  const sendDataToServer = (data) => {
+    const listick = {id, top:props.top, left:props.left, text:data};
+    dispatch(saveListick({listick}));
+  }
+
   function select() {
     dispatch(selectListick({id}));
   }
