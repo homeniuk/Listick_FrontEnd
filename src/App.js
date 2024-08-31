@@ -1,36 +1,19 @@
-
-import ButtonAdd from './components/ButtonAdd';
-import Listick from './components/Listick';
-import { useSelector, useDispatch } from 'react-redux';
-//import { useEffect } from 'react';
-import { setList } from './redux/actions/ListicksAC';
+import ListicksPage from './components/ListicksPage';
+import LoginPage from './components/LoginPage';
+import RegisterPage from './components/RegisterPage';
+import PageWasNotFound from './components/PageWasNotFound';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const dispatch = useDispatch();
-  const List = useSelector((state)=>state.Listick.listOfListics);
-
-  /*useEffect(() => {
-    const list = JSON.parse(localStorage.getItem('list'));
-    if (list) {
-     dispatch(setList(list));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('list', JSON.stringify(List));
-  }, [List]);*/
-
-
-
   return (
-    <div>
-      <ButtonAdd></ButtonAdd>
-      {List.map((i, index) => {
-        return <Listick key={i.id} id={i.id} top={i.top} left={i.left} text={i.text}/>
-      })}
-
-    </div>
-
+    <BrowserRouter>
+      <Routes>
+        <Route path='/'           element={<ListicksPage />} />
+        <Route path='login'       element={<LoginPage />} />
+        <Route path='register'    element={<RegisterPage />} />
+        <Route path='*'           element={<PageWasNotFound/>} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 export default App;
