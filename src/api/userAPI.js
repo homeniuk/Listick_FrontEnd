@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
-const baseUrl = "http://127.0.0.1:5000/";
+const baseUrl = "https://listicks001api.onrender.com/";
 
 const getConfig = () => {
   const accessToken = localStorage.getItem('accessToken');
